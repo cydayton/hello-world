@@ -7,12 +7,16 @@ var a, b;
 let t=0;
 let n=1;
 var xloc, yloc, q;
+var song;
+var slider;
+var textx1, textx2, textx3, textx4;
 
 let font,
   fontsize = 30;
 
 function preload() {
   font = loadFont('assets/Brush Script.ttf');
+  song = loadSound('assets/oceanwaves.mp3');
 }
 
 function setup() {
@@ -21,19 +25,29 @@ function setup() {
   sharkfin = loadImage("assets/sharkfin.png");
   fish = loadImage("assets/fish.png");
   bird = loadImage("assets/bird.png")
+
   textFont(font);
   textSize(fontsize);
   textAlign(CENTER, CENTER);
+
+  slider = createSlider(0, 1, 0.5, 0.01);
 
   x = 0;
   y = height*0.58;
   xx=width*0.2;
   yy = height*0.5;
+  textx1 = 680;
+  textx2 = 680;
+  textx3 = 680;
+  textx4 = 680;
 }
-
 
 function draw(){
     background(bg);
+
+    // Text
+textAlign(CENTER);
+drawWords(width * 1);
 
 // Sunshine
   fill(255, 227, 22);
@@ -72,24 +86,21 @@ function draw(){
   // Repeat movement across screen
   if (x > width) {
     x= 0}
-    
   if (xx > width) {
     xx=0}
 
 // Bird
-  image(bird, 400, 200, bird.width/5, bird.height/5)
-  image(bird, 300, 80, bird.width/3.5, bird.height/4)
+  image(bird, 100, 200, bird.width/5, bird.height/5)
+  image(bird, 300, 20, bird.width/3.5, bird.height/4)
   image(bird, 650, 300, bird.width/6, bird.height/6)
-  if (mouseIsPressed) {
-    image(bird, mouseX, mouseY, bird.width/5, bird.height/random(3, 8))
-  }
+  image(bird, mouseX, mouseY, bird.width/5, bird.height/random(3, 8))
+  
 
+// Music
+  song.setVolume(slider.value());
 }
 
-
-    
-
-
+// Star
 function star(x, y, radius1, radius2, npoints) {
   var angle = TWO_PI / npoints;
   var halfAngle = angle/2.0;
@@ -104,3 +115,28 @@ function star(x, y, radius1, radius2, npoints) {
   }
   endShape(CLOSE);
   }
+
+// Text
+function drawWords(x) {
+  // The text() function needs three parameters:
+  // the text to draw, the horizontal position,
+  // and the vertical position
+  fill(255);
+  stroke(132, 193, 255);
+  text('take', textx1, 80);
+  textx1 = textx1-1;
+  text('a seat,', textx2, 80);
+  textx2 = textx2-0.75;
+  text('stay', textx3, 80);
+  textx3 = textx3-0.5;
+  text('awhile', textx4, 80);
+  textx4 = textx4-0.25;
+}
+
+function mousePressed() {
+  if ( song.isPlaying() ) { // .isPlaying() returns a boolean
+    song.stop();
+  } else {
+    song.play();
+  }
+}
